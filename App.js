@@ -42,6 +42,46 @@ export default function App() {
     }
   }
 
+  function useSpecialOperator(value) {
+    if (value === "AC") {
+      setShowNumber({
+        ...showNumber,
+        firstNumber: "0",
+        secondNumber: "",
+      });
+
+      setOperatorSelected("");
+    }
+    if (value === "±") {
+      if (showNumber["secondNumber"] === "") {
+        setShowNumber({
+          ...showNumber,
+          firstNumber: String(Number(showNumber["firstNumber"]) * -1),
+        });
+        console.log(String(Number(showNumber[0]) * -1));
+      } else {
+        setShowNumber({
+          ...showNumber,
+          secondNumber: String(Number(showNumber["secondNumber"]) * -1),
+        });
+      }
+    }
+    if (value === "%") {
+      if (showNumber["secondNumber"] === "") {
+        setShowNumber({
+          ...showNumber,
+          firstNumber: String(Number(showNumber["firstNumber"]) * 0.01),
+        });
+        console.log(String(Number(showNumber[0]) * -1));
+      } else {
+        setShowNumber({
+          ...showNumber,
+          secondNumber: String(Number(showNumber["secondNumber"]) * 0.01),
+        });
+      }
+    }
+  }
+
   function changeUIOperator(operator) {
     setOperatorSelected(operator);
   }
@@ -64,9 +104,18 @@ export default function App() {
 
         <View style={styles.inputContainer}>
           <View style={styles.firstContainer}>
-            <Numbers number={"AC"} addNumber={changeUINumber} />
-            <Numbers number={"±"} addNumber={changeUINumber} />
-            <Numbers number={"%"} addNumber={changeUINumber} />
+            <SpecialOperators
+              specialOperator={"AC"}
+              addSpecialOperator={useSpecialOperator}
+            />
+            <SpecialOperators
+              specialOperator={"±"}
+              addSpecialOperator={useSpecialOperator}
+            />
+            <SpecialOperators
+              specialOperator={"%"}
+              addSpecialOperator={useSpecialOperator}
+            />
             <Operators
               operator={"÷"}
               addOperator={changeUIOperator}
@@ -76,7 +125,7 @@ export default function App() {
               setShowNumber={setShowNumber}
             />
           </View>
-          
+
           <View style={styles.secondContainer}>
             <Numbers number={7} addNumber={changeUINumber} />
             <Numbers number={8} addNumber={changeUINumber} />
